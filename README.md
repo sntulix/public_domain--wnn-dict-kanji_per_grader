@@ -1,4 +1,4 @@
-# $B3XG/4A;zJL(B Common$B<-=q(B(public domain license)
+# 学年漢字別 Common辞書(public domain license)
 # A Dictionary (public domain) japanese compulsory education for common
 
 reference:
