@@ -1,5 +1,8 @@
-# 学年漢字別 Common辞書(public domain license)
-# A Dictionary (public domain) japanese compulsory education for common
+# 学年漢字別 Common辞書
+# A Dictionary japanese compulsory education for common
+
+## License
+CC0 (public domian)
 
 reference:
 - https://www.mext.go.jp/a_menu/shotou/new-cs/youryou/syo/koku/001.htm
