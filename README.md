@@ -1,5 +1,5 @@
-# 学年漢字別 よみかな漢字英語辞書
-# A Dictionary japanese compulsory education on japan
+# 学年漢字別 漢字辞書
+# A Dictionary in Japan on compulsory education per the grader
 
 ## License
 CC0 (public domian)
