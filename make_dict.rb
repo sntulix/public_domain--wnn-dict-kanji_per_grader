@@ -46,8 +46,8 @@ class Base_Dict
 	def show
 		for word_object in get_list
 			if word_object.character.length == 1
-				print word_object.yomi + " "
-				print word_object.character + "\n"
+				STDERR.print word_object.yomi + " "
+				STDERR.print word_object.character + "\n"
 			end
 		end
 	end
@@ -79,24 +79,24 @@ gakunen_list = gakunen_kanji_table.get_gakunen_list
 for current_grader in gakunen_list
 	kanji_list = gakunen_kanji_table.get_list(current_grader)
 	current_grader_name = gakunen_kanji_table.get_gakunen_name(current_grader)
-	print current_grader_name + "の漢字と辞書を照合..."
+	STDERR.print current_grader_name + "の漢字と辞書を照合..."
 	for kanji in kanji_list
-		print kanji + "と"
+		STDERR.print kanji + "と"
 		for word in word_list
-			print word.character
+			STDERR.print word.character
 			word.character.each_char{ |c| if kanji==c then word.grader=current_grader_name end }
 			backspace_buf = ""
 			word.length_utf8.times { backspace_buf += "\b \b" }
-			print backspace_buf
-			STDOUT.flush
+			STDERR.print backspace_buf
+			STDERR.flush
 		end
-		print "\b\b\b\b"
-		STDOUT.flush
+		STDERR.print "\b\b\b\b"
+		STDERR.flush
 	end
-	print "完了しました。"
-	print "\n"
+	STDERR.print "完了しました。"
+	STDERR.print "\n"
 end
 
 for word in word_list
-	print word.to_word_define + "\n"
+	STDOUT.print word.to_word_define + "\n"
 end
