@@ -1,5 +1,5 @@
-# 学年漢字別 漢字辞書
-# A Dictionary in Japan on compulsory education per the grader
+# public+-wnnの辞書で、ことばに漢字が使われている場合、もしその漢字が文科省が決めた学年別漢字に一致したら、何年生で覚えてほしいかをコメントに入れた辞書です。
+# A Dictionary uisng with Japanese Input Method on PC, added comments about the Kanji that using per the grader with japanese compulsory education.
 
 ## License
 CC0 (public domian)
