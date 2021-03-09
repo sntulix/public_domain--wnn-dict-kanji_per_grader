@@ -84,7 +84,7 @@ for current_grader in gakunen_list
 		STDERR.print kanji + "と"
 		for word in word_list
 			STDERR.print word.character
-			word.character.each_char{ |c| if kanji==c then word.grader=current_grader_name end }
+			word.character.each_char{ |c| if kanji==c then word.grader="#"+current_grader_name end }
 			backspace_buf = ""
 			word.length_utf8.times { backspace_buf += "\b \b" }
 			STDERR.print backspace_buf
