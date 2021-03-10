@@ -37,6 +37,7 @@ class Base_Dict
 			word_object.grader = ''
 			@word_list.push(word_object)
 		end
+		base_dict.close
 	end
 
 	def get_list
@@ -77,6 +78,7 @@ class Gakunen_Kanji_Table
 		if @@gakunen_roman_list.include?(gakunen_roman_key)
 			gakunen_kanji_text = File.open("data/dai-"+gakunen_roman_key+"-gakunen.txt", mode="rb:utf-8")
 			kanji_list = gakunen_kanji_text.gets().chomp().split("　")
+			gakunen_kanji_text.close
 			return kanji_list
 		end
 	end
