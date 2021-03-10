@@ -53,8 +53,22 @@ class Base_Dict
 	end
 end	
 
+class Dict_Writer
+	def write_msime(word_list)
+		write_handle = File.open("dict-msime.txt", mode="wb:utf-16le")
+		write_handle.write "\uFEFF"  # BOMを出力
+		for word in word_list
+			write_handle.write(word.to_word_define+"\r\n")
+		end
+		write_handle.close
+	end
+end
+
+
+
 class Gakunen_Kanji_Table
-	@@gakunen_roman_list = {"ichi"=>"小学第一学年", "ni"=>"小学第二学年", "san"=>"小学第三学年", "yon"=>"小学第四学年", "go"=>"小学第五学年", "roku"=>"小学第六学年"}
+	#@@gakunen_roman_list = {"ichi"=>"小学第一学年", "ni"=>"小学第二学年", "san"=>"小学第三学年", "yon"=>"小学第四学年", "go"=>"小学第五学年", "roku"=>"小学第六学年"}
+	@@gakunen_roman_list = {"ichi"=>"小学第一学年"}
 	def get_gakunen_list
 		return @@gakunen_roman_list.keys
 	end
@@ -97,6 +111,5 @@ for current_grader in gakunen_list
 	STDERR.print "\n"
 end
 
-for word in word_list
-	STDOUT.print word.to_word_define + "\n"
-end
+dict_writer = Dict_Writer.new
+dict_writer.write_msime(word_list)
