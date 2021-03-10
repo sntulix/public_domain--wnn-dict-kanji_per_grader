@@ -68,8 +68,7 @@ end
 
 
 class Gakunen_Kanji_Table
-	#@@gakunen_roman_list = {"ichi"=>"小学第一学年", "ni"=>"小学第二学年", "san"=>"小学第三学年", "yon"=>"小学第四学年", "go"=>"小学第五学年", "roku"=>"小学第六学年"}
-	@@gakunen_roman_list = {"ichi"=>"小学第一学年"}
+	@@gakunen_roman_list = {"ichi"=>"小学第一学年", "ni"=>"小学第二学年", "san"=>"小学第三学年", "yon"=>"小学第四学年", "go"=>"小学第五学年", "roku"=>"小学第六学年"}
 	def get_gakunen_list
 		return @@gakunen_roman_list.keys
 	end
