@@ -1,22 +1,49 @@
 #!/usr/bin/ruby
 # coding: utf-8
 
+class Base_Character
+	attr_accessor :char, :grader
+	def initialize(character)
+		@char = character
+		@grader = ""
+	end
+
+	def get_width_on_term
+		charcode = @char.unpack("H*")[0].hex
+		if (0xe2ba80 <= charcode && charcode <= 0xe9bea0) || (0xefa480 <= charcode && charcode <= 0xefa9ad) || (0xefbc80 <= charcode && charcode <= 0xefbda0)  || (0xefbfa0 <= charcode && charcode <= 0xefbfa6)
+			return 2 
+		else
+			return 1
+		end
+	end
+end
+
 class Base_Word
-	attr_accessor :yomi, :character, :category, :grader
+	attr_accessor :yomi, :characters, :category, :grader
 	def initialize
 		@yomi = ""
-		@character = ""
+		@characters = []
 		@category = ""
 		@grader = ""
 	end
 
+	def get_characters
+		word = ""
+		@characters.each { |c| word += c.char }
+		return word
+	end
+		
 	def to_word_define
-		return @yomi + "	" + @character + "	" + @category + "	" + @grader
+		word = ""
+		for char in @characters
+			word += char.char
+		end
+		return @yomi + "	" + word + "	" + @category + "	" + @grader
 	end
 
-	def length_utf8
+	def length_by_width # total width of characters on terminal
 		length = 0
-		@character.each_char { |c| charcode=c.unpack("H*")[0].hex; if (0xe2ba80 <= charcode && charcode <= 0xe9bea0) || (0xefa480 <= charcode && charcode <= 0xefa9ad) || (0xefbc80 <= charcode && charcode <= 0xefbda0)  || (0xefbfa0 <= charcode && charcode <= 0xefbfa6) then length+=2 else length+=1 end }
+		@characters.each { |c| length += c.get_width_on_term }
 		return length
 	end
 end
@@ -32,7 +59,7 @@ class Base_Dict
 			word_define = line.split(" ")[0...3]
 			word_object = Base_Word.new
 			word_object.yomi = word_define[0]
-			word_object.character = word_define[1]
+			word_define[1].each_char { |c| word_object.characters.push(Base_Character.new(c)) }
 			word_object.category = word_define[2]
 			word_object.grader = ''
 			@word_list.push(word_object)
@@ -98,10 +125,10 @@ for current_grader in gakunen_list
 	for kanji in kanji_list
 		STDERR.print kanji + "と"
 		for word in word_list
-			STDERR.print word.character
-			word.character.each_char{ |c| if kanji==c then word.grader="#"+current_grader_name end }
+			STDERR.print word.get_characters
+			word.characters.each { |c| if kanji==c then word.grader="#"+current_grader_name end }
 			backspace_buf = ""
-			word.length_utf8.times { backspace_buf += "\b \b" }
+			word.length_by_width.times { backspace_buf += "\b \b" }
 			STDERR.print backspace_buf
 			STDERR.flush
 		end
