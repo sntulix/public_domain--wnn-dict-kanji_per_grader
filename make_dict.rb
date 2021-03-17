@@ -27,12 +27,39 @@ class Base_Character
 end
 
 class Base_Word
-	attr_accessor :yomi, :characters_data, :category, :grader
+	attr_accessor :yomi, :characters_data, :category, :grader, :category_table_msime
 	def initialize
 		@yomi = ""
 		@characters_data = []
 		@category = ""
 		@grader = ""
+
+		@category_table_msime = {
+			"サ行(する)"=>"さ変名詞",
+			"ザ行(ずる)"=>"ざ変名詞",
+			"サ行(する)&名詞"=>"さ変名詞",
+			"ザ行(ずる)&名詞"=>"ざ変名詞",
+			"形容動詞(たる)"=>"形容動詞",
+			"形容動詞&名詞"=>"形動名詞",
+			"ア行五段"=>"あわ行五段",
+			"カ行五段"=>"か行五段",
+			"ガ行五段"=>"が行五段",
+			"サ行五段"=>"さ行五段",
+			"タ行五段"=>"た行五段",
+			"ナ行五段"=>"な行五段",
+			"バ行五段"=>"ば行五段",
+			"マ行五段"=>"ま行五段",
+			"ラ行五段"=>"ら行五段",
+			"ワ行五段"=>"あわ行五段",
+			"一段"=>"一段動詞",
+			"一段&名詞"=>"一段動詞", 
+			"一動幹"=>"一段動詞", 
+			"数詞"=>"助数詞", 
+			"接頭語(各)"=>"接頭語", 
+			"単漢字"=>"名詞",
+			"接続詞,感動詞"=>"接続詞", 
+			"地名"=>"地名その他" 
+		}
 	end
 
 	def characters
@@ -41,8 +68,15 @@ class Base_Word
 		return word
 	end
 		
-	def to_word_define
-		define = @yomi + "	" + characters + "	" + @category+ "	"
+	def to_word_define(im)
+		define = @yomi + "	" + characters
+		case im
+		when "msime"
+			if @category_table_msime.has_key?(@category) then define += "	" + @category_table_msime[@category] else define += "	" + @category end
+		else
+			define += "	" + @category 
+		end
+		define += "	"
 		if "" != @grader then define += "#" + @grader end
 		return define
 	end
@@ -91,18 +125,36 @@ class Dict_Writer
 	def write(word_list)
 		write_handle = File.open("dict-utf8.txt", mode="wb:utf-8")
 		for word in word_list
-			write_handle.write(word.to_word_define+"\r\n")
+			write_handle.write(word.to_word_define(false)+"\r\n")
 		end
 		write_handle.close
 	end
 
 	def write_msime(word_list)
-		write_handle = File.open("dict-msime.txt", mode="wb:utf-16le")
-		write_handle.write "\uFEFF"  # BOMを出力
-		for word in word_list
-			write_handle.write(word.to_word_define+"\r\n")
-		end
-		write_handle.close
+		dict_prefix = "dict"
+		dict_profix = "-msime"
+		dict_index = {
+			"あ"=>/[あ-おア-オヴ]/,
+			"か"=>/[か-こが-ごカ-コガ-ゴ]/,
+			"さ"=>/[さ-そざ-ぞサ-ソザ-ゾ]/,
+			"た"=>/[た-とだ-どタ-トダ-ド]/,
+			"な"=>/[な-のナ-ノ]/,
+			"は"=>/[は-ほば-ぼぱ-ぽハ-ホバ-ボパ-ポ]/,
+			"ま"=>/[ま-もマ-モ]/,
+			"や"=>/[や-よヤ-ヨ]/,
+			"ら"=>/[ら-ろラ-ロ]/,
+			"わ"=>/[わ-んワ-ン]/
+		}
+		dict_index.each_key { |index|
+			write_handle = File.open(dict_prefix + "-" + index + dict_profix + ".txt", mode="wb:utf-16le")
+			write_handle.write "\uFEFF"  # BOMを出力
+			for word in word_list
+				if dict_index[index].match?(word.yomi[0])
+					write_handle.write(word.to_word_define("msime")+"\r\n")
+				end
+			end
+			write_handle.close
+		}
 	end
 end
 
