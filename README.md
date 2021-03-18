@@ -14,3 +14,4 @@ reference:
 - http://www.remus.dti.ne.jp/~endo-h/wnn/
 - https://www.seiai.ed.jp/sys/text/java/utf8table.html
 - http://orange-factory.com/dnf/utf-8.html
+- https://github.com/sntulix/public_domain--wnn-dict-kanji_per_grader
