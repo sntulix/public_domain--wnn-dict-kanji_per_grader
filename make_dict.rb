@@ -130,7 +130,30 @@ class Dict_Writer
 		write_handle.close
 	end
 
-	def write_msime(word_list)
+	def write_msime_per_japan_grader(word_list)
+		dict_prefix = "dict"
+		dict_profix = "-msime"
+		dict_index = [
+			"第一",
+			"第二",
+			"第三",
+			"第四",
+			"第五",
+			"第六"
+		]
+		dict_index.each { |grader|
+			write_handle = File.open(dict_prefix + "-" + "小学" + grader + "学年" + dict_profix + ".txt", mode="wb:utf-16le")
+			write_handle.write "\uFEFF"  # BOMを出力
+			for word in word_list
+				if "小学"+grader+"学年" == (word.grader)
+					write_handle.write(word.to_word_define("msime")+"\r\n")
+				end
+			end
+			write_handle.close
+		}
+	end
+
+	def write_msime_per_japanese_akasatana(word_list)
 		dict_prefix = "dict"
 		dict_profix = "-msime"
 		dict_index = {
@@ -224,7 +247,7 @@ word_list.each { |word|
 
 dict_writer = Dict_Writer.new
 dict_writer.write(word_list)
-dict_writer.write_msime(word_list)
+dict_writer.write_msime_per_japan_grader(word_list)
 
 STDERR.print "完了しました。"
 STDERR.print "\n"
